@@ -1,115 +1,94 @@
-# Freelance Ledger
+# Freelance Ledger by Examen QA
 
-A local-first Windows desktop finance tracker for freelancers and small agencies.
+Track client work, payments, employee payouts, and expenses in one Windows desktop app.
 
-The visible application name is **Freelance Ledger by Examen QA**. This is a
-reviewed source snapshot of the plain JavaScript/Electron desktop application,
-based on **0.3.0-rc.1**. It includes a small header/window-title update that is
-absent from the currently installed build. No installer or release binary is
-published with this import.
+Freelance Ledger is built for freelancers and small agencies that need to connect the hours they record with the money they receive and pay out. Financial data is stored locally, and the Analytics tab helps you explore it by month, client, contract, or employee where that breakdown is supported.
 
-The existing application ID, package/executable/installer identity, storage
-locations and settings filenames remain unchanged. A normal development launch
-can therefore use the same profile as an existing installation. The isolated
-review command below is preferable when evaluating the source with synthetic data.
+**Status:** Prerelease (`0.3.0-rc.1`). Source code is available here; a downloadable Windows installer has not been published yet.
 
-## Desktop application features
+## What you can do
 
-- Client and contract management
-- Weekly work and hours tracking
-- Incoming payment queues and recorded receipts
-- Employee payouts and payment history
-- Expense tracking and GST RCM reports
-- USD/INR references and local PDF/XLSX reporting
-- Analytics for receipts, hours, expenses, and employee payouts
+- **Manage clients and contracts:** Organize work sources, clients, contracts, employees, and rates.
+- **Track weekly work:** Record hours, review entered weeks and gaps, and pick up where you left off.
+- **Review incoming payments:** Sort and filter the payment queue, select related entries, and record receipts and deductions.
+- **Manage employee payouts:** Review scheduled payments and record paid dates and transaction references.
+- **Track expenses and GST:** Group expenses by type and prepare GST RCM reports.
+- **Explore your numbers:** View receipts, hours, expenses, and paid payouts with monthly trends, All-time totals, supported filters, and exact-record View data tables.
+- **Export and back up:** Generate PDF and Excel reports from supported record views, and import or export your application data as JSON.
 
-Analytics runs locally with native SVG charts, shared filters, exact-record
-drill-down and keyboard-accessible View data tables. It separates received
-money, recorded work, expense base and paid employee payouts. Pending incoming
-estimates and pending payouts are separate commitments. See the
-[reporting definitions](docs/reporting.md).
+USD amounts and saved INR references are shown separately. Analytics identifies missing or incomplete values rather than treating them as zero.
 
-## Setup and tests
+## Get started
 
-Use Windows and Node.js 24. The import was checked with Node **24.13.1** and npm
-**11.8.0**. Install the locked development dependencies in the cloned checkout:
+You will need **Windows**, **Git**, and **Node.js 24 with npm**.
+
+Run these commands in PowerShell:
 
 ```powershell
 git clone https://github.com/examenqa/freelance-ledger.git
 cd freelance-ledger
 npm ci
-npm test
 ```
 
-The full existing suite contains **174 tests** and uses built-in Node tooling,
-synthetic records, VM mocks and disposable test directories. Tests do not launch
-Electron or read the active application data. A few storage tests can leave
-synthetic temporary directories behind.
+### Try it with separate data
 
-For an isolated, empty development review, use a new directory inside this
-checkout. The generated directory is ignored by Git:
+For a first look, launch an empty review profile:
 
 ```powershell
-$ledgerReviewRoot = Join-Path (Get-Location).Path (".review-" + [guid]::NewGuid().ToString())
+$ledgerReviewName = ".review-" + [guid]::NewGuid().ToString()
+$ledgerReviewRoot = Join-Path (Get-Location).Path $ledgerReviewName
 npm start -- "--review-root=$ledgerReviewRoot"
 ```
 
-Review mode redirects profile, session and data paths to that disposable
-directory and blocks external network requests. Keep any reviewed data
-synthetic. It is an application review safeguard, not an OS security sandbox.
-`npm start` without the review argument is a normal launch; back up current data
-before using development code with an existing profile.
+This keeps the trial's data and profile in a separate folder inside the checkout and blocks external network requests in review mode. Use synthetic records to explore the app.
 
-## Windows packaging
+For a normal development launch:
+
+```powershell
+npm start
+```
+
+**Already have the app installed?** A normal development launch may use the same local profile and data. Back up your current data before opening it with development code, or use the separate review profile above.
+
+## Your first workflow
+
+1. Open **Setup** to add work sources, clients, contracts, employees, and rates.
+2. Enter hours in **Weekly Work** and use its progress view to review earlier periods.
+3. Record receipts in **Incoming**, employee payments in **Payouts**, and costs in **Expenses**.
+4. Open **Analytics** for trends and breakdowns, or **Records** to review history and generate reports.
+
+## Understanding the reports
+
+Analytics keeps received money, worked hours, expense base, and employee payouts separate. Pending incoming work is shown as an estimate, and pending payouts are shown as commitments.
+
+Monthly grouping depends on the metric: receipt date for money received, work-period start for hours, expense date for expenses, and actual paid date for employee payouts. Net receipts are not a calculation of accounting profit.
+
+See the [reporting definitions](docs/reporting.md) for currency handling, filters, date rules, and incomplete values. Analytics offers View data tables; exports are available from supported Records views.
+
+## Development
+
+Run the test suite:
+
+```powershell
+npm test
+```
+
+Tests use synthetic records and disposable storage.
+
+Build a Windows installer:
 
 ```powershell
 npm run dist
 ```
 
-This is the existing electron-builder Windows NSIS packaging command. It writes
-generated files to `dist/`; it does not install the application. There is no
-`npm run build` script. The lockfile and build configuration are retained from
-the desktop release, including its legacy executable/installer names and icon.
-Packaging and interactive application checks were not repeated for the public
-title change; no rebuild or installation was requested for this import.
+Build output is written to `dist/`. Generated executables and installers currently use the legacy name **ExamenQA Payment Tracker**; the application header and window title use **Freelance Ledger by Examen QA**.
 
-## Prerelease limits
+## Project status and feedback
 
-- Saved USD and INR values are reported independently; missing values remain
-  unavailable. INR is a saved historical reference, not a bank reconciliation.
-- Client attribution follows current contract/client associations. Historical
-  client ownership is not stored as a separate snapshot.
-- Overview, Records, GST reports and Analytics have different legacy scopes;
-  their totals are not interchangeable. Analytics does not claim accounting
-  profit or margin and has no separate export action.
-- Windows layout and keyboard checks are representative. Chromium accessibility
-  text-selection diagnostics were observed during forced accessibility
-  inspection; they did not recur in a narrower confirmation. Full screen-reader,
-  physical DPI, multi-monitor and printing coverage is incomplete.
-- The dependency tree is retained as reviewed. Setup may emit upstream
-  deprecation warnings; no dependency upgrade or security certification is
-  implied by a passing test suite.
+This is prerelease software. See [known limitations](docs/known-limitations.md) for reporting differences, accessibility, and platform coverage. Custom logo uploads and editable app titles are planned enhancements.
 
-See [known reporting and verification limits](docs/known-limitations.md).
-Custom logo uploads and user-editable titles are future enhancements; this
-snapshot adds no such controls.
-
-## Data privacy
-
-Financial records, settings, backups, private review evidence, credentials, and screenshots containing real records must stay outside this public repository. Examples and test fixtures must use synthetic data.
-
-This import contains an explicitly reviewed file selection and the new
-repository's existing history. It does not include the private development Git
-history, captured financial aggregate fixtures, machine acceptance records,
-profiles, backups, review screenshots/logs, installers, dependencies or build
-outputs. Test records are synthetic; one ambiguous test reference was replaced
-with an explicit synthetic token.
-
-Ignore rules are a safeguard, not a privacy audit. Review the actual staged files
-and commit contents before publishing examples or test changes.
+Bug reports, feature suggestions, and contributions are welcome. [Open an issue](https://github.com/examenqa/freelance-ledger/issues) with the app version, steps to reproduce the problem, and what you expected to happen. Use synthetic examples and keep real financial records, credentials, and private screenshots out of public reports.
 
 ## License
 
-[MIT](LICENSE). The repository owner confirmed permission to publish the source
-and bundled logo/icon under this license. Third-party dependencies retain their
-own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md).
+[MIT](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for bundled components.
