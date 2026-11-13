@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelance Ledger by Examen QA</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./queue.css" />
+    <link rel="stylesheet" href="./ui-layout.css" />
+    <link rel="stylesheet" href="./analytics.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-brand">
+        <div class="hero-logo-shell">
+          <img class="hero-logo" src="./assets/alpha-logo.png" alt="ExamenQA logo" />
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow hero-title" style="text-transform: none">Freelance Ledger by Examen QA</p>
+          <h1>Payments, Payouts, Expenses, And GST RCM</h1>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <nav class="tabs" aria-label="Payment tracker sections">
+        <button class="tab-button active" type="button" data-tab-target="overview">Overview</button>
+        <button class="tab-button" type="button" data-tab-target="analytics">Analytics</button>
+        <button class="tab-button" type="button" data-tab-target="weekly-work">Weekly Work</button>
+        <button class="tab-button" type="button" data-tab-target="incoming">Incoming</button>
+        <button class="tab-button" type="button" data-tab-target="payouts">Payouts</button>
+        <button class="tab-button" type="button" data-tab-target="expenses">Expenses</button>
+        <button class="tab-button" type="button" data-tab-target="records">Records</button>
+        <button class="tab-button" type="button" data-tab-target="setup">Setup</button>
+      </nav>
+
+        <section class="tab-panel active" data-tab="overview">
+          <div class="panel overview-panel">
+            <div class="section-title compact overview-title">
+              <div>
+                <div class="title-line">
+                  <h2>Period summary</h2>
+                  <div class="note-popover">
+                    <button type="button" class="note-trigger" aria-label="Overview info">!</button>
+                    <div class="note-popover-panel">Based on the incoming payment date for revenue, with matching period totals across payouts, expenses, GST, and agency gains.</div>
+                  </div>
+                </div>
+            </div>
+            <div class="overview-periods" id="overview-periods">
+              <button class="subtab-button" type="button" data-overview-month-shift="-1">Previous Month</button>
+              <button class="subtab-button active" type="button" data-overview-period="month">Current Month</button>
+              <button class="subtab-button" type="button" data-overview-period="financial-year">Current Financial Year</button>
+              <button class="subtab-button" type="button" data-overview-period="calendar-year">Current Calendar Year</button>
+              <button class="subtab-button" type="button" data-overview-period="all-time">All Time</button>
+              <input id="overview-month" aria-label="Overview month" type="month" class="hidden" />
+            </div>
+          </div>
+          <section class="stats overview-stats" id="stats"></section>
+        </div>
+      </section>
+
+      <section class="panel tab-panel" data-tab="analytics" id="analytics-panel" aria-label="Analytics">
+        <p>Analytics will be available after the data file loads.</p>
+      </section>
+
+      <section class="panel tab-panel" data-tab="setup">
+          <div class="section-title setup-heading">
+            <div>
+              <h2>Clients, sources, contracts, and rates</h2>
+            </div>
+            <div class="setup-launcher">
+              <div class="setup-launcher-row">
+                <button id="setup-export-data" class="secondary-button setup-data-path-button" type="button">Export</button>
+                <button id="setup-import-data" class="secondary-button setup-data-path-button" type="button">Import</button>
+                <button id="setup-data-path" class="secondary-button setup-data-path-button" type="button">Data Path</button>
+                <button id="setup-add-new" class="secondary-button setup-add-new-button" type="button" aria-expanded="false">Add New</button>
+                <div id="setup-add-new-menu" class="setup-add-new-menu hidden" aria-label="Setup forms">
+                  <button class="subtab-button" type="button" data-formtab-target="setup-contract-form">Contract</button>
+                  <button class="subtab-button" type="button" data-formtab-target="setup-employee-form">Employee</button>
+                  <button class="subtab-button" type="button" data-formtab-target="setup-rate-form">Employee Rate</button>
+                </div>
+              </div>
+              <div id="setup-data-path-value" class="setup-data-path-value"></div>
+            </div>
+          </div>
+        <div class="setup-grid compact-setup">
+          <form id="contract-form" class="card form-card formtab-panel" data-formtab="setup-contract-form">
+            <h3>Add Contract</h3>
+            <label class="field-label" for="contract-form-name"><span>Contract name (required)</span><input id="contract-form-name" name="name" placeholder="Contract name" required /></label>
+            <label class="field-label" for="contract-form-shortName"><span>Short name</span><input id="contract-form-shortName" name="shortName" placeholder="Short name" /></label>
+            <input type="hidden" name="editId" />
+            <div class="inline-control">
+              <label class="field-label" for="contract-form-sourceId"><span>Source</span><select id="contract-form-sourceId" name="sourceId" data-options="sources"></select></label>
+              <button id="show-source-fields" type="button" class="secondary-button">Add</button>
+            </div>
+            <div id="new-source-fields" class="nested-fields hidden">
+              <label class="field-label" for="contract-form-newSourceName"><span>New source name</span><input id="contract-form-newSourceName" name="newSourceName" placeholder="New source name" /></label>
+            </div>
+            <div class="inline-control">
+              <label class="field-label" for="contract-form-clientId"><span>Client</span><select id="contract-form-clientId" name="clientId" data-options="source-clients"></select></label>
+              <button id="show-client-fields" type="button" class="secondary-button">Add</button>
+            </div>
+            <div id="new-client-fields" class="nested-fields hidden">
+              <label class="field-label" for="contract-form-newClientName"><span>New client name</span><input id="contract-form-newClientName" name="newClientName" placeholder="New client name" /></label>
+            </div>
+            <label class="field-label" for="contract-form-priceType"><span>Pricing type</span><select id="contract-form-priceType" name="priceType">
+              <option value="HOURLY">Hourly</option>
+              <option value="FIXED">Fixed</option>
+            </select></label>
+            <label class="field-label" for="contract-form-priceUsd"><span>Contract rate / fixed price (USD) (required)</span><input id="contract-form-priceUsd" name="priceUsd" type="number" step="0.01" placeholder="Fixed contract price/rate USD" required /></label>
+            <label class="field-label" for="contract-form-serviceChargeMode"><span>Service charge mode</span><select id="contract-form-serviceChargeMode" name="serviceChargeMode">
+              <option value="FIXED">Fixed service charge for this contract</option>
+              <option value="VARIABLE">Variable every payment</option>
+              <option value="NONE">No service charge</option>
+            </select></label>
+            <label class="field-label" for="contract-form-serviceChargePercent"><span>Service charge (%)</span><input id="contract-form-serviceChargePercent" name="serviceChargePercent" type="number" step="0.01" placeholder="Fixed service charge % for this contract" /></label>
+            <label class="field-label" for="contract-form-gstMode"><span>GST treatment</span><select id="contract-form-gstMode" name="gstMode">
+              <option value="RCM">GST payable by us under RCM</option>
+              <option value="COLLECTED">GST collected by platform/vendor</option>
+              <option value="NONE">No GST tracking</option>
+            </select></label>
+            <label class="field-label" for="contract-form-gstPercent"><span>GST (%)</span><input id="contract-form-gstPercent" name="gstPercent" type="number" step="0.01" value="18" placeholder="GST %" /></label>
+            <label class="field-label" for="contract-form-notes"><span>Notes</span><textarea id="contract-form-notes" name="notes" placeholder="Notes"></textarea></label>
+            <button type="submit">Save Contract</button>
+            <button type="button" class="secondary-button" data-formtab-cancel>Cancel</button>
+          </form>
+
+          <form id="employee-form" class="card form-card formtab-panel" data-formtab="setup-employee-form">
+            <h3>Add Employee</h3>
+            <input type="hidden" name="editId" />
+            <label class="field-label" for="employee-form-name"><span>Employee name (required)</span><input id="employee-form-name" name="name" placeholder="Employee name" required /></label>
+            <label class="field-label" for="employee-form-email"><span>Email</span><input id="employee-form-email" name="email" type="email" placeholder="Email" /></label>
+            <label class="field-label" for="employee-form-phone"><span>Phone</span><input id="employee-form-phone" name="phone" placeholder="Phone number" /></label>
+            <label class="field-label" for="employee-form-bankAccount"><span>Bank account number</span><input id="employee-form-bankAccount" name="bankAccount" placeholder="Bank account number" /></label>
+            <label class="field-label" for="employee-form-ifsc"><span>IFSC code</span><input id="employee-form-ifsc" name="ifsc" placeholder="IFSC code" /></label>
+            <label class="field-label" for="employee-form-bankName"><span>Bank name</span><input id="employee-form-bankName" name="bankName" placeholder="Bank name" /></label>
+            <label class="field-label" for="employee-form-notes"><span>Notes</span><textarea id="employee-form-notes" name="notes" placeholder="Notes"></textarea></label>
+            <button type="submit">Save Employee</button>
+            <button type="button" class="secondary-button" data-formtab-cancel>Cancel</button>
+          </form>
+
+          <form id="rate-form" class="card form-card formtab-panel" data-formtab="setup-rate-form">
+            <h3>Employee Contract Rate</h3>
+            <label class="field-label" for="rate-form-employeeId"><span>Employee (required)</span><select id="rate-form-employeeId" name="employeeId" data-options="employees" required></select></label>
+            <label class="field-label" for="rate-form-contractId"><span>Contract (required)</span><select id="rate-form-contractId" name="contractId" data-options="payroll-contracts" required></select></label>
+            <div class="rate-mode-row">
+              <button id="rate-mode-pass" type="button" class="rate-mode-option" data-rate-mode="pass-through" aria-pressed="false">Pass-through</button>
+              <button id="rate-mode-standard" type="button" class="rate-mode-option" data-rate-mode="standard" aria-pressed="true">Standard</button>
+            </div>
+            <input name="noAgencyCut" type="hidden" value="false" />
+            <label class="field-label" for="rate-form-rateUsd"><span>Employee pay rate (USD/hour) (required)</span><input id="rate-form-rateUsd" name="rateUsd" type="number" step="0.01" placeholder="Fixed USD pay rate" required /></label>
+            <button type="submit">Save Rate</button>
+            <button type="button" class="secondary-button" data-formtab-cancel>Cancel</button>
+          </form>
+        </div>
+        <div class="subtabs" aria-label="Setup records">
+          <button class="subtab-button active" type="button" data-subtab-target="setup-sources">Sources</button>
+          <button class="subtab-button" type="button" data-subtab-target="setup-clients">Clients</button>
+          <button class="subtab-button" type="button" data-subtab-target="setup-contracts">Contracts</button>
+          <button class="subtab-button" type="button" data-subtab-target="setup-employees">Employees</button>
+          <button class="subtab-button" type="button" data-subtab-target="setup-rates">Rates</button>
+          <button class="subtab-button" type="button" data-subtab-target="setup-expenses">Expense Names</button>
+        </div>
+          <div class="setup-records">
+            <div class="subtab-panel active" data-subtab="setup-sources">
+              <div id="sources-table"></div>
+            </div>
+            <div class="subtab-panel" data-subtab="setup-clients">
+              <div id="clients-table"></div>
+            </div>
+            <div class="subtab-panel" data-subtab="setup-contracts">
+              <div id="contracts-table"></div>
+            </div>
+            <div class="subtab-panel" data-subtab="setup-employees">
+              <div id="employees-table"></div>
+            </div>
+            <div class="subtab-panel" data-subtab="setup-rates">
+              <div id="rates-table"></div>
+            </div>
+            <div class="subtab-panel" data-subtab="setup-expenses">
+              <div id="expense-types-table"></div>
+            </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-tab="weekly-work">
+        <form id="time-form" class="panel form-card">
+          <div class="section-title compact">
+            <div>
+              <h2>Enter worked hours</h2>
+            </div>
+          </div>
+          <label class="field-label" for="time-form-employeeId"><span>Employee (required)</span><select id="time-form-employeeId" name="employeeId" data-options="employees" data-placeholder="Select employee" required></select></label>
+          <label class="field-label" for="time-form-contractId"><span>Contract (required)</span><select id="time-form-contractId" name="contractId" data-options="employee-contracts" data-placeholder="Select contract" required></select></label>
+          <input type="hidden" name="editId" />
+          <div class="week-nav">
+            <button id="previous-week" type="button" class="secondary-button">Previous Week</button>
+            <button id="current-week" type="button" class="secondary-button">Current Week</button>
+            <button id="next-week" type="button" class="secondary-button">Next Week</button>
+          </div>
+          <div class="two">
+            <label class="field-label" for="time-form-weekStart"><span>Work period start (required)</span><input id="time-form-weekStart" name="weekStart" type="date" required /></label>
+            <label class="field-label" for="time-form-weekEnd"><span>Work period end (required)</span><input id="time-form-weekEnd" name="weekEnd" type="date" required /></label>
+          </div>
+          <label class="field-label" for="time-form-hours"><span>Hours worked (required)</span><input id="time-form-hours" name="hours" type="number" min="0.01" step="0.01" aria-describedby="time-validation-message" placeholder="Hours worked" required /></label>
+          <div id="time-validation-message" class="inline-message" aria-live="polite"></div>
+          <div id="time-preview" class="time-preview hidden"></div>
+          <label class="field-label" for="time-form-notes"><span>Notes</span><textarea id="time-form-notes" name="notes" placeholder="Notes"></textarea></label>
+          <button type="submit">Save Time</button>
+        </form>
+      </section>
+
+      <section class="tab-panel" data-tab="incoming">
+        <div class="panel incoming-queue">
+          <div class="section-title compact">
+            <div>
+                <div class="title-line">
+                  <h2>Payment queue</h2>
+                  <div class="note-popover">
+                    <button type="button" class="note-trigger" aria-label="Incoming info">!</button>
+                    <div class="note-popover-panel">Built from Weekly Work. Select entries from one work week to apply a shared transaction ID, conversion rate, and received date. Upwork service charges are calculated automatically unless explicitly overridden.</div>
+                  </div>
+                </div>
+            </div>
+            <div id="incoming-queue-summary" class="queue-summary"></div>
+          </div>
+          <div id="incoming-queue-message" class="inline-message" aria-live="polite"></div>
+          <form id="incoming-bulk-form" class="incoming-bulk-form hidden">
+            <div class="incoming-bulk-summary" id="incoming-bulk-summary"></div>
+            <label class="incoming-bulk-field incoming-bulk-transaction-field">
+              <span>Transaction ID</span>
+              <input id="incoming-bulk-transaction" type="text" placeholder="0000000000" required />
+            </label>
+            <label class="incoming-bulk-field incoming-bulk-exchange-field">
+              <span>Exchange Rate</span>
+              <input id="incoming-bulk-exchange-rate" type="number" step="0.0001" min="0" placeholder="00.00" required />
+            </label>
+            <label class="incoming-bulk-field incoming-bulk-date-field">
+              <span>Received Date</span>
+              <input id="incoming-bulk-received-date" type="date" required />
+            </label>
+            <button id="incoming-bulk-apply" type="submit" aria-label="Apply transaction details to selected payment rows" title="Apply transaction details to selected rows">Apply</button>
+            <button id="incoming-bulk-receive" type="button" class="secondary-button" aria-label="Apply details and mark selected payment rows as received" title="Apply details and mark selected rows as received">Mark as Received</button>
+            <button id="incoming-bulk-clear" type="button" class="secondary-button" aria-label="Clear the current payment-row selection" title="Clear the current selection">Clear</button>
+          </form>
+          <div id="incoming-queue"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-tab="payouts">
+        <div class="panel">
+          <div class="section-title compact">
+            <div>
+                <div class="title-line">
+                  <h2>Auto-generated payouts</h2>
+                  <div class="note-popover">
+                    <button type="button" class="note-trigger" aria-label="Payouts info">!</button>
+                    <div class="note-popover-panel">Payouts are generated from time entries and use the latest incoming exchange rate for the same contract. There is no manual payout entry.</div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div id="generated-payouts-table"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-tab="expenses">
+        <form id="expense-form" class="panel form-card">
+          <div class="section-title compact">
+            <div>
+              <h2>Record expense</h2>
+            </div>
+          </div>
+          <div class="inline-control">
+            <label class="field-label" for="expense-form-expenseTypeId"><span>Expense name</span><select id="expense-form-expenseTypeId" name="expenseTypeId" data-options="expense-types"></select></label>
+            <button id="show-expense-type-fields" type="button" class="secondary-button">Add</button>
+          </div>
+          <div id="new-expense-type-fields" class="nested-fields hidden">
+            <label class="field-label" for="expense-form-newExpenseTypeName"><span>New expense name</span><input id="expense-form-newExpenseTypeName" name="newExpenseTypeName" placeholder="New expense name, e.g. BrowserStack" /></label>
+          </div>
+          <input type="hidden" name="editId" />
+          <label class="field-label" for="expense-form-expenseDate"><span>Expense date (required)</span><input id="expense-form-expenseDate" name="expenseDate" type="date" required /></label>
+          <label class="field-label" for="expense-form-label"><span>Transaction ID (optional)</span><input id="expense-form-label" name="label" placeholder="Transaction ID (optional)" /></label>
+          <label class="field-label" for="expense-form-amountUsd"><span>Expense amount (USD) (required)</span><input id="expense-form-amountUsd" name="amountUsd" type="number" step="0.01" placeholder="Expense USD" required /></label>
+          <label class="field-label" for="expense-form-exchangeRate"><span>Exchange rate (INR per USD) (required)</span><input id="expense-form-exchangeRate" name="exchangeRate" type="number" step="0.0001" placeholder="Exchange rate for INR reference" required /></label>
+          <label class="field-label" for="expense-form-gstMode"><span>GST treatment</span><select id="expense-form-gstMode" name="gstMode">
+            <option value="RCM">GST payable by us under RCM</option>
+            <option value="COLLECTED">GST collected by vendor</option>
+            <option value="NONE">No GST tracking</option>
+          </select></label>
+          <label class="field-label" for="expense-form-gstPercent"><span>GST (%)</span><input id="expense-form-gstPercent" name="gstPercent" type="number" step="0.01" value="18" placeholder="GST %" /></label>
+          <label class="field-label" for="expense-form-notes"><span>Notes</span><textarea id="expense-form-notes" name="notes" placeholder="Notes"></textarea></label>
+          <button type="submit">Save Expense</button>
+        </form>
+      </section>
+
+        <section class="panel tab-panel" data-tab="records">
+          <div class="records-toolbar" data-active-recordtab="records-time">
+            <div class="records-filters">
+              <div class="record-filter-employee-wrap"><label class="field-label" for="record-filter-employee"><span>Employee</span>
+                <select id="record-filter-employee" aria-label="Filter records by employee">
+                  <option value="">All employees</option>
+                </select></label>
+              </div>
+            <label class="field-label record-month-label" for="record-filter-month"><span>Record month</span><input id="record-filter-month" type="month" /></label>
+            <label class="field-label" for="record-filter-week"><span>Work week</span><select id="record-filter-week" aria-label="Filter records by work week">
+              <option value="">All weeks</option>
+            </select></label>
+            <button id="clear-record-filters" type="button" class="secondary-button">Clear Filters</button>
+          </div>
+          <div class="records-report-controls" aria-label="Records report actions">
+            <div class="month-nav">
+              <button id="previous-record-month" type="button" class="secondary-button">Previous Month</button>
+              <button id="current-record-month" type="button" class="secondary-button">Current Month</button>
+              <button id="next-record-month" type="button" class="secondary-button">Next Month</button>
+            </div>
+            <button id="print-records-report" type="button" class="icon-button" aria-label="Print selected records report" title="Print report">🖨</button>
+            <button id="export-records-pdf" type="button" class="icon-button pdf-button" aria-label="Export selected records report as PDF" title="Export PDF"><span class="pdf-button-icon" aria-hidden="true"></span></button>
+            <button id="export-records-xlsx" type="button" class="icon-button xlsx-button" aria-label="Export selected records report as Excel workbook" title="Export Excel">XLS</button>
+            <div id="records-report-message" class="inline-message records-report-message" aria-live="polite"></div>
+          </div>
+          <div class="subtabs" aria-label="Records tables">
+            <button class="subtab-button active" type="button" data-recordtab-target="records-time">Time Entries</button>
+            <button class="subtab-button" type="button" data-recordtab-target="records-payments">Incoming Payments</button>
+            <button class="subtab-button" type="button" data-recordtab-target="records-payouts">Payouts</button>
+            <button class="subtab-button" type="button" data-recordtab-target="records-expenses">Expenses</button>
+            <button class="subtab-button" type="button" data-recordtab-target="records-gst-rcm">GST RCM</button>
+          </div>
+        </div>
+        <div class="records-tabs">
+          <div class="subtab-panel active" data-recordtab="records-time">
+            <div id="time-table"></div>
+          </div>
+          <div class="subtab-panel" data-recordtab="records-payments">
+            <div id="payments-table"></div>
+          </div>
+          <div class="subtab-panel" data-recordtab="records-payouts">
+            <div id="payouts-table"></div>
+          </div>
+          <div class="subtab-panel" data-recordtab="records-expenses">
+            <div id="expenses-table"></div>
+            </div>
+            <div class="subtab-panel" data-recordtab="records-gst-rcm">
+              <div id="gst-rcm-summary"></div>
+              <div id="gst-rcm-table"></div>
+            </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="payout-paid-modal" class="dialog-overlay hidden" aria-hidden="true">
+      <div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="payout-paid-title">
+        <p class="eyebrow">Payout status</p>
+        <h3 id="payout-paid-title">Confirm payout date</h3>
+        <p id="payout-paid-question" class="dialog-question"></p>
+        <div class="dialog-actions">
+          <button id="payout-paid-yes" type="button">Yes</button>
+          <button id="payout-paid-no" type="button" class="secondary-button">No</button>
+        </div>
+        <div id="payout-paid-late-fields" class="dialog-late hidden">
+          <div class="dialog-field">
+            <label for="payout-paid-date">Actual paid date</label>
+            <input id="payout-paid-date" type="date" />
+          </div>
+        </div>
+        <div class="dialog-field">
+          <label for="payout-paid-transaction">Transaction ID</label>
+          <input id="payout-paid-transaction" type="text" placeholder="Txn ID" />
+        </div>
+        <button id="payout-paid-save" type="button">Save Payment</button>
+      </div>
+    </div>
+
+    <div id="incoming-received-modal" class="dialog-overlay hidden" aria-hidden="true">
+      <div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="incoming-received-title">
+        <p class="eyebrow">Incoming payment</p>
+        <h3 id="incoming-received-title">Enter received date</h3>
+        <p id="incoming-received-question" class="dialog-question"></p>
+        <div class="dialog-field">
+          <label for="incoming-received-date">Received date</label>
+          <input id="incoming-received-date" type="date" />
+        </div>
+        <div class="dialog-actions">
+          <button id="incoming-received-save" type="button">Save Date</button>
+          <button id="incoming-received-cancel" type="button" class="secondary-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./shared/calculations.js"></script>
+    <script src="./shared/incoming-payment-updates.js"></script>
+    <script src="./shared/financial-display.js"></script>
+<script src="./shared/work-validation.js"></script>
+<script src="./shared/queue-view.js"></script>
+<script src="./shared/weekly-progress.js"></script>
+<script src="./shared/setup-lifecycle.js"></script>
+    <script src="./shared/analytics.js"></script>
+    <script src="./analytics-ui.js"></script>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "examenqa-payment-tracker",
+  "version": "0.3.0-rc.1",
+  "private": true,
+  "author": "ExamenQA",
+  "description": "Simple desktop tracker for USD payments, INR reference, payouts, expenses, and GST RCM.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test --test-isolation=none",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.2.2",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.examenqa.paymenttracker",
+    "productName": "ExamenQA Payment Tracker",
+    "icon": "src/assets/app-icon.ico",
+    "electronDist": "node_modules/electron/dist",
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "src/assets/app-icon.ico",
+      "target": "nsis",
+      "forceCodeSigning": false,
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "src/assets/app-icon.ico",
+      "uninstallerIcon": "src/assets/app-icon.ico"
+    }
+  }
+}

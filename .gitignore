@@ -147,3 +147,54 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Desktop packages and generated exports
+/dist/
+/out/
+*.exe
+*.msi
+*.asar
+*.7z
+*.zip
+*.pdf
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# Financial data, settings, snapshots, and captured historical fixtures
+**/*payment-tracker-data*.json
+**/*payment-tracker-settings*.json
+**/regression-overview-*.json
+**/*-snapshot*.json
+**/backups/
+**/data/
+**/Data/
+**/Test Data/
+*.bak
+*.backup
+
+# Disposable reviews, profiles, screenshots, and private evidence
+.review-*/
+**/*-evidence*/
+**/private-*
+**/profiles/
+**/profile/
+**/screenshots/
+**/review-runtime.jsonl
+.payment-tracker-isolated-review.json
+*.reg
+*.dmp
+
+# Local credentials and machine configuration
+.npmrc
+.yarnrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+.codex/
+.agents/
+.idea/
+.vscode/

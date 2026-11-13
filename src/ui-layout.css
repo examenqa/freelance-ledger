@@ -1,0 +1,145 @@
+/* Compact desktop layout: table screens use the available window, forms keep readable widths. */
+:root { --ink-muted: var(--muted); }
+main, .hero { width: calc(100% - 32px); max-width: none; }
+.hero { padding: 10px 0 8px; }
+.hero-logo-shell { width: 88px; height: 48px; }
+.tabs { flex: 0 0 auto; flex-wrap: wrap; }
+.tab-button, .subtab-button, button { overflow-wrap: normal; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid #0f766e; outline-offset: 2px;
+}
+.field-label { display: grid; gap: 4px; min-width: 0; margin: 0; color: var(--ink); }
+.field-label > span { font-size: .75rem; line-height: 1.3; font-weight: 700; color: #475569; }
+.field-label input, .field-label select, .field-label textarea { width: 100%; min-width: 0; margin: 0; }
+.inline-control { align-items: end; }
+.inline-control .field-label { flex: 1 1 auto; }
+.form-card { gap: 10px; }
+.form-card .field-label input, .form-card .field-label select { min-height: 38px; padding: 8px 10px; }
+.form-card .field-label textarea { min-height: 64px; padding: 8px 10px; }
+.form-card > button { min-height: 38px; padding: 9px 12px; }
+.inline-message:empty { display: none; }
+.inr-reference { color: var(--muted); font-size: .76rem; }
+
+/* Keep independent toolbar groups from shrinking over one another. */
+.records-toolbar { display: flex; align-items: end; flex-wrap: wrap; gap: 10px 14px; flex: 0 0 auto; }
+.records-filters {
+  display: flex; flex: 0 1 auto; flex-wrap: wrap; min-width: 0; gap: 8px; align-items: end;
+}
+.records-filters > .field-label, .records-filters > .record-filter-employee-wrap { flex: 0 1 180px; min-width: 140px; }
+.records-filters .record-month-label { flex-basis: 160px; min-width: 155px; }
+.records-filters input[type="month"], .records-filters select { min-height: 36px; }
+.records-filters button { min-height: 36px; flex: 0 0 auto; justify-self: auto; }
+.records-report-controls { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; align-items: center; }
+.records-report-controls .month-nav { display: flex; flex-wrap: wrap; min-width: 0; gap: 6px; }
+.records-report-controls .month-nav button { flex: 0 0 auto; width: auto; }
+.records-toolbar .subtabs { flex: 1 1 100%; overflow: visible; min-width: 0; flex-wrap: wrap; justify-content: flex-start; margin: 0; }
+.records-report-message { max-width: min(100%, 320px); overflow-wrap: anywhere; }
+
+/* Remaining-height sizing, rather than fixed 460/560px row viewports. */
+.tab-panel[data-tab="incoming"].active,
+.tab-panel[data-tab="payouts"].active,
+.tab-panel[data-tab="records"].active,
+.tab-panel[data-tab="setup"].active { display: flex; flex-direction: column; overflow: auto; }
+.tab-panel[data-tab="incoming"] > .panel,
+.tab-panel[data-tab="payouts"] > .panel { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 300px; }
+.section-title, .setup-heading, .subtabs, #incoming-bulk-form, #gst-rcm-summary { flex: 0 0 auto; }
+#incoming-queue, #generated-payouts-table { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 150px; }
+#incoming-queue .queue-tools { flex: 0 0 auto; }
+.incoming-queue .table-wrap,
+#generated-payouts-table .table-wrap,
+.records-tabs .table-wrap,
+.setup-records .table-wrap { max-height: none; flex: 1 1 auto; min-height: 150px; }
+.records-tabs, .setup-records { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 180px; }
+.records-tabs > .subtab-panel.active, .setup-records > .subtab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+.records-tabs > .subtab-panel.active > div:not(#gst-rcm-summary),
+.setup-records > .subtab-panel.active > div { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 150px; }
+#gst-rcm-table > .report-head { flex: 0 0 auto; }
+#gst-rcm-table table { min-width: 1080px; }
+#gst-rcm-table th:first-child, #gst-rcm-table td:first-child { min-width: 92px; overflow-wrap: normal; }
+#gst-rcm-table th:nth-child(2), #gst-rcm-table td:nth-child(2) { min-width: 100px; white-space: nowrap; }
+.setup-grid.compact-setup { flex: 0 0 auto; }
+.tab-panel[data-tab="setup"] .form-card.formtab-panel.active { max-height: none; overflow: visible; }
+.setup-grid.compact-setup .form-card > * { flex-shrink: 0; }
+.setup-records { margin-top: 6px; }
+.setup-records td, .records-tabs td { overflow-wrap: anywhere; }
+.setup-records button { width: auto; }
+
+/* Keep financial tokens whole; long labels/references retain their own wrapping. */
+.pill { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+:is(#payments-table, #payouts-table, #expenses-table, #generated-payouts-table) { min-width: 0; }
+:is(#payments-table, #payouts-table, #expenses-table, #generated-payouts-table) .table-wrap {
+  min-width: 0; max-width: 100%;
+}
+:is(#payments-table, #payouts-table, #expenses-table, #generated-payouts-table) table { table-layout: auto; }
+#payments-table table { min-width: 1180px; }
+#payouts-table table, #generated-payouts-table table { min-width: 1100px; }
+#expenses-table table { min-width: 900px; }
+:is(#payments-table, #payouts-table, #expenses-table, #generated-payouts-table) td {
+  overflow-wrap: normal; word-break: normal;
+}
+#payments-table td:not(:nth-child(3)),
+#payouts-table td:not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(7)),
+#generated-payouts-table td:not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(8)),
+#expenses-table td:not(:nth-child(2)):not(:nth-child(3)) { white-space: nowrap; }
+#payments-table td:nth-child(3) { min-width: 180px; }
+#payouts-table td:nth-child(2), #generated-payouts-table td:nth-child(3) { min-width: 130px; }
+#payouts-table td:nth-child(3), #generated-payouts-table td:nth-child(4) { min-width: 220px; }
+#payouts-table td:nth-child(7), #generated-payouts-table td:nth-child(8) { min-width: 140px; }
+#expenses-table td:nth-child(2), #expenses-table td:nth-child(3) { min-width: 160px; }
+#payments-table td:nth-child(3),
+#payouts-table td:nth-child(2), #payouts-table td:nth-child(3), #payouts-table td:nth-child(7),
+#generated-payouts-table td:nth-child(3), #generated-payouts-table td:nth-child(4), #generated-payouts-table td:nth-child(8),
+#expenses-table td:nth-child(2), #expenses-table td:nth-child(3) {
+  white-space: normal; overflow-wrap: anywhere;
+}
+#contracts-table table { min-width: 900px; }
+#rates-table table { min-width: 760px; }
+#contracts-table td:nth-child(3), #contracts-table td:nth-child(4),
+#rates-table td:nth-child(3), #rates-table td:nth-child(4) {
+  white-space: nowrap; overflow-wrap: normal; word-break: normal;
+}
+.report-summary { gap: 8px; }
+.report-summary article { padding: 12px; }
+.report-summary strong { font-size: 1rem; }
+.incoming-bulk-form {
+  display: flex; flex-wrap: wrap; align-items: end; gap: 8px; padding: 10px;
+}
+.incoming-bulk-form.hidden { display: none; }
+.incoming-bulk-summary { flex: 1 1 220px; min-width: 180px; }
+.incoming-bulk-field { flex: 0 1 150px; min-width: 120px; }
+.incoming-bulk-form button { flex: 0 0 auto; width: auto; min-height: 36px; }
+.incoming-bulk-summary .pill { justify-self: start; }
+
+/* Entry context and explicitly marked weekly progress remain beside each other. */
+.tab-panel[data-tab="weekly-work"].active {
+  display: grid; grid-template-columns: minmax(340px, .9fr) minmax(440px, 1.3fr); gap: 16px; align-items: stretch;
+}
+#time-form { min-width: 0; min-height: 0; align-content: start; overflow: auto; margin: 0; }
+#time-form > * { flex-shrink: 0; }
+#time-validation-message:not(:empty) { display: grid; gap: 8px; margin: 0; }
+#time-validation-message button { width: auto; justify-self: start; padding: 8px 10px; }
+.weekly-progress { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 18px; }
+.weekly-progress h2 { font-size: 1.2rem; margin: 0 0 8px; }
+.weekly-progress p { margin: 5px 0; color: #475569; font-size: .8rem; }
+.weekly-progress-toolbar, .weekly-progress-summary { display: flex; flex-wrap: wrap; gap: 7px; margin: 8px 0; align-items: center; }
+.weekly-progress button { width: auto; padding: 7px 10px; font-size: .76rem; }
+.weekly-progress button:disabled { opacity: .45; cursor: not-allowed; }
+.weekly-progress-history { flex: 1 1 auto; max-height: none; min-height: 160px; }
+.weekly-progress-history table { min-width: 380px; }
+.weekly-progress-history th, .weekly-progress-history td { padding: 9px; }
+.weekly-progress-history td:last-child { white-space: nowrap; }
+#time-validation-message.error, #weekly-progress-status.error { color: #9f1239; }
+.archive-badge { display: inline-block; padding: 2px 6px; border-radius: 5px; background: #f1f5f9; color: #475569; font-size: .7rem; margin-left: 6px; }
+@media (max-width: 1180px) {
+  .report-summary { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .incoming-bulk-field { flex: 1 1 130px; }
+}
+@media (max-width: 900px) {
+  .tab-panel[data-tab="weekly-work"].active { display: flex; flex-direction: column; }
+  #time-form { flex: 0 0 auto; overflow: visible; }
+  .weekly-progress { min-height: 380px; }
+}
+@media print {
+  main, .hero { width: 100%; }
+  .table-wrap { max-height: none !important; overflow: visible !important; }
+}
